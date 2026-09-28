@@ -1,4 +1,4 @@
---VERSION:1.2
+--VERSION:1.3
 --CHANGELOG_START
 - Perbaikan bug antarmuka
 - Optimalisasi performa pembacaan data
@@ -11,7 +11,7 @@ import "android.os.Handler"
 import "android.os.Looper"
 import "java.lang.Runnable"
 -- ================= KONFIGURASI UPDATE =================
-local currentVersion="1.2"
+local currentVersion="1.3"
 local repoUrl="https://raw.githubusercontent.com/aditmada89-spec/SamAditMada/main/ManagerAPIKey"
 local scriptPath=package.searchpath("main",package.path) or (os.getenv("EXTERNAL_STORAGE").."/main.lua")
 local baseDir=scriptPath:match("(.*/)") or (os.getenv("EXTERNAL_STORAGE").."/")
@@ -258,11 +258,38 @@ end
 end)
 provDlg.show()
 end
+local function showCheckUpdateDialog()
+local dlg = LuaDialog(service)
+dlg.setTitle(currentVersion)
+dlg.setButton("update", function()
+service.speak("Memeriksa pembaruan...")
+pcall(function()
+Http.get(repoUrl.."?t="..tostring(os.time()),function(code,content)
+if code==200 and content then
+local onlineVersion=content:match("%-%-VERSION:([^\n\r]+)")
+if onlineVersion and onlineVersion~=currentVersion then
+os.remove(timeCacheFile)
+checkUpdate()
+else
+Handler(Looper.getMainLooper()).post(Runnable{run=function() service.speak("Skrip sudah berada di versi terbaru.") end})
+end
+else
+Handler(Looper.getMainLooper()).post(Runnable{run=function() service.speak("Gagal menghubungi server GitHub. Periksa koneksi internet Anda.") end})
+end
+end)
+end)
+end)
+dlg.setNegativeButton("Batal", function(d)
+d.dismiss()
+end)
+dlg.show()
+end
 menuDlg = LuaDialog(service)
 menuDlg.setTitle(E_KEY .. " Manager API Key")
 local menuItems = String{
 E_KEY .. " Login & Buat Kunci API",
-E_INFO .. " Tentang Plugin"
+E_INFO .. " Tentang Plugin",
+E_STAR .. " Check Update"
 }
 menuDlg.setItems(menuItems)
 menuDlg.setOnItemClickListener(function(parent, v, position, id)
@@ -272,6 +299,9 @@ showProviderDialog()
 elseif position == 1 then
 menuDlg.dismiss()
 showAboutDialog()
+elseif position == 2 then
+menuDlg.dismiss()
+showCheckUpdateDialog()
 end
 end)
 menuDlg.setNegativeButton("Tutup", function(d)
