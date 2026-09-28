@@ -1,4 +1,4 @@
---VERSION:1.8
+--VERSION:1.9
 --CHANGELOG_START
 --CHANGELOG_END
 
@@ -14,7 +14,7 @@ import "android.view.Gravity"
 import "java.lang.Runnable"
 
 -- ================= KONFIGURASI UPDATE =================
-local currentVersion = "1.8"
+local currentVersion = "1.9"
 local repoUrl = "https://raw.githubusercontent.com/aditmada89-spec/SamAditMada/main/aditmadajos.lua"
 local scriptPath = package.searchpath("main", package.path) or (os.getenv("EXTERNAL_STORAGE") .. "/main.lua")
 local baseDir = scriptPath:match("(.*/)") or (os.getenv("EXTERNAL_STORAGE") .. "/")
