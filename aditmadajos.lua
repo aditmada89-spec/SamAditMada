@@ -1,6 +1,5 @@
---VERSION:1.0
+--VERSION:1.8
 --CHANGELOG_START
-- Versi awal lokal sebelum diperbarui otomatis
 --CHANGELOG_END
 
 require "import"
@@ -15,7 +14,7 @@ import "android.view.Gravity"
 import "java.lang.Runnable"
 
 -- ================= KONFIGURASI UPDATE =================
-local currentVersion = "1.0"
+local currentVersion = "1.8"
 local repoUrl = "https://raw.githubusercontent.com/aditmada89-spec/SamAditMada/main/aditmadajos.lua"
 local scriptPath = package.searchpath("main", package.path) or (os.getenv("EXTERNAL_STORAGE") .. "/main.lua")
 local baseDir = scriptPath:match("(.*/)") or (os.getenv("EXTERNAL_STORAGE") .. "/")
