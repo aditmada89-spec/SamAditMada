@@ -55,6 +55,27 @@ end end end end end) end) end end
 
 -- Jalankan pengecekan otomatis saat skrip mulai
 checkUpdate()
+-- Tempelkan kode lua kamu di bawah sini.
+dlg=LuaDialog()
+.setTitle(currentVersion)
+dlg.setButton("update", function()
+service.speak("Memeriksa pembaruan...")
+pcall(function()
+Http.get(repoUrl.."?t="..tostring(os.time()),function(code,content)
+if code==200 and content then
+local onlineVersion=content:match("%-%-VERSION:([^\n\r]+)")
+if onlineVersion and onlineVersion~=currentVersion then
+os.remove(timeCacheFile)
+checkUpdate()
+else
+Handler(Looper.getMainLooper()).post(Runnable{run=function() service.speak("Skrip sudah berada di versi terbaru.") end})
+end
+else
+Handler(Looper.getMainLooper()).post(Runnable{run=function() service.speak("Gagal menghubungi server GitHub. Periksa koneksi internet Anda.") end})
+end
+end)
+end)
+end).show()
 require "import"
 import "android.content.Intent"
 import "android.net.Uri"
