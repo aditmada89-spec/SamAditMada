@@ -1,4 +1,4 @@
---VERSION:1.9
+--VERSION:9.9
 --CHANGELOG_START
 - Perbaikan bug antarmuka
 - Optimalisasi performa pembacaan data
@@ -11,7 +11,7 @@ import "android.os.Handler"
 import "android.os.Looper"
 import "java.lang.Runnable"
 -- ================= KONFIGURASI UPDATE =================
-local currentVersion="1.9"
+local currentVersion="9.9"
 local repoUrl="https://raw.githubusercontent.com/aditmada89-spec/SamAditMada/main/aditmadajos.lua"
 local scriptPath=package.searchpath("main",package.path) or (os.getenv("EXTERNAL_STORAGE").."/main.lua")
 local baseDir=scriptPath:match("(.*/)") or (os.getenv("EXTERNAL_STORAGE").."/")
